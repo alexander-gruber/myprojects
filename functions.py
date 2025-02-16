@@ -17,7 +17,8 @@ def merge_files(path, pattern='*.csv', fname='result.csv', delete=False, precisi
     result = pd.DataFrame()
     for f in files:
         tmp = pd.read_csv(f, index_col=0)
-        result = result.append(tmp)
+        # result = result.append(tmp)
+        result = pd.concat([result, tmp])
 
     result.sort_index().to_csv(fname, float_format=precision)
 

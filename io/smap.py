@@ -59,7 +59,10 @@ class SMAP_io(object):
             # print(f'No valid SMAP data for {lat:.2f} / {lon:.2f}')
             # smap_ts = None
 
-        return smap_ts[~np.isnan(smap_ts['soil_moisture'])]
+        smap_ts = smap_ts[~np.isnan(smap_ts['soil_moisture'])]['soil_moisture']
+        smap_ts.name = 'smap'
+
+        return smap_ts
 
     def close(self):
         self.ds_ts.close()

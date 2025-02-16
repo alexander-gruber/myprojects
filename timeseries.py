@@ -46,7 +46,10 @@ def calc_anom(Ser, mode='climatological', window_size=35, return_clim=False, ret
     if return_clim:
         res = res['climatology']
 
-    res.name = Ser.name
+    try:
+        res.name = Ser.name
+    except:
+        pass
 
     return res
 

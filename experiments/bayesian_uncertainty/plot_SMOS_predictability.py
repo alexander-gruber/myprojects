@@ -70,8 +70,6 @@ def plot_timeseries():
         df_smos = pd.DataFrame({'SMOS': ds['Soil_Moisture'][loc,idx]}, index=pd.DatetimeIndex(num2date(ds['time'][idx], ds['time'].units,
                                                                 only_use_python_datetimes=True, only_use_cftime_datetimes=False))).dropna()[start:end]
 
-
-
     io = HSAF_io()
     df_ascat = io.read(lat, lon)[start:end]/100
     df_ascat = (df_ascat - df_ascat.mean()) / df_ascat.std() * df_smos['SMOS'].std() + df_smos['SMOS'].mean()
@@ -105,7 +103,7 @@ def plot_timeseries():
 def plot_min_detection_threshold():
 
     avg_factor = np.sqrt(10)
-    th = [25.4792, 3.8027, 2.2591, 1.6306, 1.2854]
+    th = [27.729490, 3.872922, 2.286378, 1.651292, 1.299826]
     cl = ['slight', 'moderate', 'severe', 'extreme', 'exceptional', 'undetectable']
 
     if platform.system() == 'Darwin':
@@ -170,7 +168,7 @@ def plot_min_detection_threshold():
     # plt.tight_layout()
     # plt.show()
 
-    fout = r"H:\work\experiments\drought_predictability\detection_probability_thresholds.png"
+    fout = r"H:\work\experiments\drought_predictability\detection_probability_thresholds_ASCAT_SMOS.png"
     fig.savefig(fout, dpi=300, bbox_inches='tight')
     plt.close()
 

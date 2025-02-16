@@ -57,7 +57,7 @@ class ISMN_io(object):
         tmplist.to_csv(self.list_file)
         self.list = tmplist
 
-    def read(self, network, station, surface_depth=0.1, surface_only=False):
+    def read(self, network, station, surface_depth=0.1, surface_only=False, variables=None):
 
         names = ['sm_surface']
         depths = [[0, surface_depth]]
@@ -87,8 +87,6 @@ class ISMN_io(object):
             # res = res.resample('6h').mean()
 
         return res
-
-
 
     def iter_stations(self, surface_depth=0.1, surface_only=True):
 
