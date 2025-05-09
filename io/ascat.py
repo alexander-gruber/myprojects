@@ -47,6 +47,8 @@ class HSAF_io(object):
 
     def latlon2gpi(self, lat, lon):
         return self.grid.find_nearest_gpi(lon, lat, max_dist=10000)[0]
+    def lonlat2gpi(self, lon, lat):
+        return self.grid.find_nearest_gpi(lon, lat, max_dist=10000)[0]
 
     def load(self, cell):
 
@@ -72,7 +74,8 @@ class HSAF_io(object):
         if len(args) == 1:
             gpi = int(args[0])
         else:
-            gpi = self.latlon2gpi(*args)
+            # gpi = self.latlon2gpi(*args)
+            gpi = self.lonlat2gpi(*args)
 
         if not gpi in self.gpis:
             print('GPI not found')

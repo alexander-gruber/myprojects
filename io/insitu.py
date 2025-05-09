@@ -57,7 +57,7 @@ class ISMN_io(object):
         tmplist.to_csv(self.list_file)
         self.list = tmplist
 
-    def read(self, network, station, surface_depth=0.1, surface_only=False, variables=None):
+    def read(self, network, station, surface_depth=0.1, surface_only=False):
 
         names = ['sm_surface']
         depths = [[0, surface_depth]]
@@ -93,6 +93,12 @@ class ISMN_io(object):
         for idx, station in self.list.iterrows():
             yield station, self.read(station.network, station.station, surface_depth=surface_depth, surface_only=surface_only)
 
+    def get_station_coordinates(self, network, station):
+
+        lat = self.list[(self.list['network']=='SCAN') & (self.list['station']=='LittleRiver')]['latitude'].iloc[0]
+        lon = self.list[(self.list['network']=='SCAN') & (self.list['station']=='LittleRiver')]['longitude'].iloc[0]
+
+        return lat, lon
 
 if __name__=='__main__':
 

@@ -966,9 +966,71 @@ def plot_sst_unc_prob_ts():
             ax2.set_ylabel('Probability [-]')
     # plt.legend()
 
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
+def plot_sst_unc_prob_ts_2():
+
+    sst = xr.load_dataset(r"D:\data_sets\SST\GBR\sst_gbr.nc")
+
+    start = '2020-01-15'
+    end = '2020-03-15'
+
+    prob = pd.read_csv(r"D:\data_sets\SST\GBR\sst_gbr_threshold_probs_MMA_det_interrupted_th_clim\result_pct.csv", index_col=0).T
+    prob.index = pd.DatetimeIndex(prob.index)
+    prob = prob.loc[start:end, :]
+
+    det = pd.read_csv(r"D:\data_sets\SST\GBR\sst_gbr_threshold_probs_MMA_det_interrupted_th_clim\result_all.csv",
+                           index_col=0).T
+    det.index = pd.DatetimeIndex(det.index)
+    det = det.loc[start:end, :]
+
+    loc1 = prob.columns[np.where((prob>0.1)&(prob<0.11))[1][0]]
+    loc3 = prob.columns[np.where(prob==prob.max().max())[1][0]]
+
+    ts1 = sst.sel(loc=loc1).to_pandas().drop('loc',axis='columns')
+    ts3 = sst.sel(loc=loc3).to_pandas().drop('loc',axis='columns')
+
+    tss = [ts1, ts3]
+    dets = [det[loc1], det[loc3]]
+
+    fig, axs = plt.subplots(2,1,figsize=(16, 8),sharex=True)
+    for i,(ax, ts, d) in enumerate(zip(axs, tss, dets)):
+
+        th = ts.loc['1981-01-01':'2010-12-31','sst'].resample('1M').mean().resample('1Y').max().mean() + 1
+        ts = ts.loc[start:end]
+
+        ax.plot(ts.index, ts['sst'], label='SST', color='blue')
+
+        # Plot the shaded area for standard deviation
+
+        ax.fill_between(ts.index,
+                         ts['sst'] - 2*ts['sst_uncertainty'],
+                         ts['sst'] + 2*ts['sst_uncertainty'],
+                         color='purple', alpha=0.2, label='2-sigma')
+        ax.fill_between(ts.index,
+                         ts['sst'] - ts['sst_uncertainty'],
+                         ts['sst'] + ts['sst_uncertainty'],
+                         color='blue', alpha=0.2, label='1-sigma')
+
+        ax.axhline(th, linestyle='--', color='k', linewidth=1, label='MMM+1')
+        ax.set_ylim([th-2.5, th+2.5])
+
+        ax.fill_betweenx([20, 40],
+                         ts[ts['sst']>=th].index[0] - pd.to_timedelta('1D'),
+                         ((ts[ts['sst']>=th].index[-1] + pd.to_timedelta('1D')) if i == 0 else ts[ts['sst']>=th].index[-1]),
+                         color='green', alpha=0.15, label='SST$_{det}$ > MMM+1')
+
+        ax.set_ylabel('SST [$^\circ$C] ')
+        if i==0:
+            ax.legend(loc='upper left')
+
+    fout = r'H:\work\experiments\coral_bleaching\ts_plot_examples\ts3.png'
+    fig.savefig(fout, dpi=300, bbox_inches='tight')
+    plt.close()
+
+    # plt.tight_layout()
+    # plt.show()
 
 def test_random_walk():
 
@@ -1018,7 +1080,7 @@ if __name__=='__main__':
 
     # test_random_walk()
     #
-    plot_sst_unc_prob_ts()
+    plot_sst_unc_prob_ts_2()
     # plot_n_bleaching_events_ts()
     # plot_sst_map()
 
