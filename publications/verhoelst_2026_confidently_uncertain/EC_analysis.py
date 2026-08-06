@@ -188,7 +188,6 @@ def plot_result_maps():
     plot_ecorr = False
 
     res = pd.read_csv(r"H:\work\experiments\extended_collocation\results\result.csv", index_col=0)
-    # res = pd.read_csv(r"H:\work\experiments\extended_collocation\results_old\result.csv", index_col=0)
 
     names = ['ASCAT', 'AMSR2', 'SMOS', 'SMAP']
     ecorrs = list(combinations(names[1::], 2))
@@ -307,7 +306,6 @@ if __name__=='__main__':
 
     # EC_test(1,1)
     # run(nprocs=6)
-    # merge_files(r'H:\work\experiments\extended_collocation\results', pattern='result_*.csv', fname='result.csv', delete=False)
-    # merge_files(r'H:\work\experiments\extended_collocation\results\old', pattern='result_*.csv', fname='result.csv', delete=False)
+    # merge_files(r'H:\work\experiments\extended_coll\results', pattern='result_*.csv', fname='result.csv', delete=False)
 
     plot_result_maps()

@@ -49,7 +49,7 @@ def calc_Palmer_SM(df, depth_surface=50., depth_rootzone=500., alpha=10, gamma=0
         if dEP <= 0: # soil moisture increase
             f_dSM = 1.0 # surface layer recharges first
         else: # soil moisture decline
-            f_dSM = min({sm / (0.75 * awc_surf), 1) # all atmospheric demand taken from surface if ssm >= 75% sat.
+            f_dSM = min(ssm / (0.75 * awc_surf), 1) # all atmospheric demand taken from surface if ssm >= 75% sat.
             f_dSM = max(f_dSM, 0.1) # minimum surface loss rate of 10 %
 
         # Additive diffusion term (NASA version)
