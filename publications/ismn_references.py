@@ -17,7 +17,7 @@ def extract_doi(text):
         http://doi.org/10.1234/abc.def
         https://dx.doi.org/10.1234/abc.def
 
-    Returns:
+    Returns:x
         str or None: DOI without the URL/prefix.
     """
 
