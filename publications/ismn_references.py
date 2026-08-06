@@ -187,7 +187,7 @@ def ensure_unique_key(key, entries):
     keys = np.array([e[0] for e in entries])
     ind = np.where(keys==key)[0]
     if len(ind) > 0:
-        key += string.ascii_lowercase[ind[0]+1]
+        key += string.ascii_lowercase[len(ind)]
     return  key
 
 def create_ismn_references(networks=None,
@@ -252,7 +252,7 @@ def create_ismn_references(networks=None,
 
     if return_reftext:
         #  General ISMN acknowledgement
-        reftext = f'We thank the ISMN for their continuous support of the community \\citep({','.join(ismnkeys)}). '
+        reftext = f'We thank the ISMN for their continuous support of the community \\citep{{{','.join(ismnkeys)}}}. '
 
         # Acknowledgement text without bibtex entries
         ind_ack = np.where(types == 'Ack')[0]
@@ -278,7 +278,7 @@ def create_ismn_references(networks=None,
             if len(ind[0]) == 0:
                 continue
             cnt += 1
-            refstrings += [f'{net} \\citep({','.join(keys[ind])})']
+            refstrings += [f'{net} \\citep{{{','.join(keys[ind])}}}']
 
         if cnt == 1:
             reftext += f'We thank the network {refstrings[0]} for sharing for sharing their data with the ISMN.'
